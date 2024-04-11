@@ -1,0 +1,160 @@
+{% extends 'base1.html' %}
+
+{% block title %}Inventory Management - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Gestión de Clientes</h1>
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+        <svg class="bi"><use xlink:href="#calendar3"/></svg>
+        Èsta Semana
+        </button>
+    </div>
+    </div>
+
+    <br>
+
+    <div class="employee-management-content">
+        <h3>Lista de Empleados</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr>
+                        <th scope="row">{{ employee[0] }}</th>
+                        <td>{{ employee[1] }}</td>
+                        <td>{{ employee[2] }}</td>
+                        <td>{{ employee[3] }}</td>
+                        <td>{{ employee[4] }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal{{ employee[0] }}">
+                                Actualizar
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ employee[0] }}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Add Modal -->
+        <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEmployeeModalLabel">Agregar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Add new employee form -->
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="add_employee">
+                            <div class="mb-3">
+                                <label for="add-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="add-name" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-position" class="col-form-label">Position:</label>
+                                <input type="text" class="form-control" id="add-position" name="position">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-email" class="col-form-label">Email:</label>
+                                <input type="email" class="form-control" id="add-email" name="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-phone" class="col-form-label">Phone:</label>
+                                <input type="text" class="form-control" id="add-phone" name="phone">
+                            </div>
+                            <button type="submit" class="btn btn-success">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Modals -->
+        {% for employee in employees %}
+        <div class="modal fade" id="updateModal{{ employee[0] }}" tabindex="-1" aria-labelledby="updateModalLabel{{ employee[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel{{ employee[0] }}">Update Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Update employee form -->
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="update_employee">
+                            <input type="hidden" name="employee_id" value="{{ employee[0] }}">
+                            <div class="mb-3">
+                                <label for="update-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="update-name" name="name" value="{{ employee[1] }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="update-position" class="col-form-label">Position:</label>
+                                <input type="text" class="form-control" id="update-position" name="position" value="{{ employee[2] }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="update-email" class="col-form-label">Email:</label>
+                                <input type="email" class="form-control" id="update-email" name="email" value="{{ employee[3] }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="update-phone" class="col-form-label">Phone:</label>
+                                <input type="text" class="form-control" id="update-phone" name="phone" value="{{ employee[4] }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Delete Modals -->
+        {% for employee in employees %}
+        <div class="modal fade" id="deleteModal{{ employee[0] }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ employee[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel{{ employee[0] }}">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete the employee '{{ employee[1] }}'?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="delete_employee">
+                            <input type="hidden" name="employee_id" value="{{ employee[0] }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Add Employee Button -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+            Agregar Empleado
+        </button>
+    </div>
+{% endblock %}

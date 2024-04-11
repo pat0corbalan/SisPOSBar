@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory Management - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+
+
+<br>
+<div class="container">
+    <div class="card">
+        <div class="p-5 mb-4 rounded-3">
+            <div class="container-fluid py-5 ">
+                <h1 class="display-5 fw-bold">Bienvenido a nuestro Sistema POS</h1>
+                <p class="col-md-8 fs-4">
+                    El Sistema de Punto de Venta (POS) de Gproyect es una solución integral 
+                    para la gestión de ventas y operaciones comerciales.
+                </p>
+                <p>Con nuestro sistema, puedes:</p>
+                <ul>
+                    <li>Gestionar inventario de productos</li>
+                    <li>Registrar ventas de forma rápida y precisa</li>
+                    <li>Generar reportes detallados de ventas y finanzas</li>
+                    <li>Administrar clientes</li>
+                    <li>Personalizar tu configuración según las necesidades de tu negocio</li>
+                </ul>
+                <button class="btn btn-primary btn-lg" type="button" onclick="window.location.href='/sale_process'">
+                    Ir a Ventas
+                </button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}    

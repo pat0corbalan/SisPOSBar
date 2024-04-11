@@ -1,0 +1,106 @@
+{% extends 'base1.html' %}
+
+{% block title %}Gestión de Gastos - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Gestión de Gastos</h1>
+    </div>
+
+    <br>
+    <div class="container">
+        <div class="product-management-content">
+            <h3 class="text-center">Lista de Gastos</h3>
+            <div class="row g-3">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Monto</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Categoría</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                                <tr>
+                                    <th scope="row">{{ expense[0] }}</th>
+                                    <td>{{ expense[1] }}</td>
+                                    <td>{{ expense[2] }}</td>
+                                    <td>{{ expense[3] }}</td>
+                                    <td>{{ expense[4] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-2"></div>
+            </div>
+
+            <div class="row g-3">    
+                <div class="col-5"></div>
+            
+                <div class="col-3">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg> Agregar Gasto
+                    </button>
+                </div>
+            
+                <div class="col-6"></div>
+            </div>
+            
+            <!-- Add Expense Modal -->
+            <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addExpenseModalLabel">Agregar Gasto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add new expense form -->
+                            <form action="" method="POST">
+                                <input type="hidden" name="action" value="add_expense">
+                                <div class="mb-3">
+                                    <label for="add-description" class="col-form-label">Descripción:</label>
+                                    <input type="text" class="form-control" id="add-description" name="description">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="add-amount" class="col-form-label">Monto:</label>
+                                    <input type="text" class="form-control" id="add-amount" name="amount">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="add-date" class="col-form-label">Fecha:</label>
+                                    <input type="date" class="form-control" id="add-date" name="date">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="category" class="col-form-label">Categoría:</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option value="Luz">Luz</option>
+                                        <option value="Luz">Gas</option>
+                                        <option value="Alquiler">Alquiler</option>
+                                        <option value="Wifi">Wifi</option>
+                                        <option value="Extracciones">Extracciones</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">Agregar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'base1.html' %}
+
+{% block title %}Inventory Management - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Gestión de Productos</h1>
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+        <svg class="bi"><use xlink:href="#calendar3"/></svg>
+        Èsta Semana
+        </button>
+    </div>
+    </div>
+
+    <br>
+<div class="container">
+    <div class="product-management-content">
+        <h3 class="text-center">Lista de Productos</h3>
+        <div class="row g-3">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th class="text-center" scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <th scope="row">{{ product[0] }}</th>
+                                <td>{{ product[1] }}</td>
+                                <td>{{ product[2] }}</td>
+                                <td>{{ product[4] }}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal{{ product[0] }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                                            <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                                        </svg> Actualizar
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ product[0] }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                        </svg> Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        
+        <div class="row g-3">    
+            <div class="col-5"></div>
+        
+            <div class="col-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg> Agregar Producto
+                </button>
+            </div>
+        
+            <div class="col-6"></div>
+        </div>
+        
+        <!-- Add Modal -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Agregar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Add new product form -->
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="add_product">
+                            <div class="mb-3">
+                                <label for="add-name" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="add-name" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-category" class="col-form-label">Categoria:</label>
+                                    <select class="form-control" id="add-category" name="category">
+                                        <option value="Perfumes">Gaseosas</option>
+                                        <option value="Perfumes">Cervezas</option>
+                                    </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="add-price" class="col-form-label">Precio:</label>
+                                <input type="text" class="form-control" id="add-price" name="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-cost" class="col-form-label">Costo:</label>
+                                <input type="text" class="form-control" id="add-cost" name="cost">
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-quantity" class="col-form-label">Cantidad:</label>
+                                <input type="text" class="form-control" id="add-quantity" name="quantity">
+                            </div>
+                            <button type="submit" class="btn btn-success">Agregar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Update Modal -->
+        {% for product in products %}
+        <div class="modal fade" id="updateModal{{ product[0] }}" tabindex="-1" aria-labelledby="updateModalLabel{{ product[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel{{ product[0] }}">Actualizar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Update product form -->
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="update_product">
+                            <input type="hidden" name="product_id" value="{{ product[0] }}">
+                            <div class="mb-3">
+                                <label for="update-name" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="update-name" name="name" value="{{ product[1] }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="update-price" class="col-form-label">Precio:</label>
+                                <input type="text" class="form-control" id="update-price" name="price" value="{{ product[2] }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="update-quantity" class="col-form-label">Cantidad:</label>
+                                <input type="text" class="form-control" id="update-quantity" name="quantity" value="{{ product[4] }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <!-- Delete Modal -->
+        {% for product in products %}
+        <div class="modal fade" id="deleteModal{{ product[0] }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ product[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel{{ product[0] }}">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea eliminar el producto '{{ product[1] }}'?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form action="" method="POST">
+                            <input type="hidden" name="action" value="delete_product">
+                            <input type="hidden" name="product_id" value="{{ product[0] }}">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+        {% endblock %}

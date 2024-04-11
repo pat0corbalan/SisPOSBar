@@ -1,0 +1,65 @@
+{% extends 'base1.html' %}
+
+{% block title %}Inventory Management - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Integración de pagos</h1>
+    
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+        <svg class="bi"><use xlink:href="#calendar3"/></svg>
+        Èsta Semana
+        </button>
+    </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="payment-integration-content row g-3">
+            <div class="col-3">
+                <h3>Formas de Pago</h3>
+                <ul class="list-group">
+                    {% for payment_method in payment_methods %}
+                        <li class="list-group-item list-group-item-action active">{{ payment_method[1] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="col-1"></div>
+
+            <div class="col-3">
+            <h3>Agregar forma de pago</h3>
+                <form  action="" method="POST">
+                    <input class="form-control" type="hidden" name="action" value="add_payment_method">
+                    <label for="name">Nombre:</label>
+                    <input class="form-control" type="text" id="name" name="name" required>
+                    <label for="interes">interes:</label>
+                    <input class="form-control" type="number" id="interes" name="interes" required>
+                    <button class="btn btn-success" type="submit">Agregar</button>
+                </form>
+            </div>
+
+            <div class="col-1"></div>
+
+            <div class="col-3">
+                <h3>Eliminar forma de pago</h3>
+                <form action="" method="POST">
+                    <input class="form-control" type="hidden" name="action" value="delete_payment_method">
+                    <label for="payment_method_id">Forma de Pago ID:</label>
+                    <input class="form-control" type="text" id="payment_method_id" name="payment_method_id" required>
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+{% endblock %}

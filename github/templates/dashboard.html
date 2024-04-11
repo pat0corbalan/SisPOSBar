@@ -1,0 +1,229 @@
+{% extends 'base1.html' %}
+
+{% block title %}Inventory Management - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+
+                    <p> Total de Ventas: {{ total_sales }} <br>    
+                    <p>Ingresos: ${{ total_sales }}</p>
+                    <p>Egresos: ${{ total_egress }}</p>                    
+                    <p>Total neto: ${{ total_profit }}</p>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg class="bi"><use xlink:href="#calendar3"/></svg> 
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="handlePeriodChange('day')">Diario</a></li>
+                <li><a class="dropdown-item" href="#" onclick="handlePeriodChange('week')">Semanal</a></li>
+                <li><a class="dropdown-item" href="#" onclick="handlePeriodChange('month')">Mensual</a></li>
+                <li><a class="dropdown-item" href="#" onclick="handlePeriodChange('year')">Anual</a></li>
+            </ul>
+        </div>
+        
+    </div>
+    </div>    
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="salesChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="col-6">
+            <div class="card ">
+                <canvas id="barChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card">
+                <h2 class="text-center">Productos más vendidos</h2>
+                {% if top_products %}
+                    <table class="table table-hover">
+                        <thead class="table-primary">
+                            <tr class="text-center">
+                                <th>Producto</th>
+                                <th>Cantidad vendida</th>
+                                <th>Ingresos generados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in top_products %}
+                                <tr class="text-center">
+                                    <td>{{ product[0] }}</td>
+                                    <td>{{ product[1] }}</td>
+                                    <td>${{ product[2] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center">No hay datos disponibles</p>
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+   // Función para manejar el cambio de período
+function handlePeriodChange(period) {
+    // Hacer una solicitud AJAX para obtener los nuevos datos según el período seleccionado
+    fetch('/update-sales-data?period=' + period)
+        .then(response => response.json())
+        .then(data => {
+            // Actualizar el gráfico con los nuevos datos
+            updateSalesChart(data.labels, data.data);
+        })
+        .catch(error => {
+            console.error('Error al actualizar los datos:', error);
+        });
+}
+
+// Obtener el contexto del lienzo (canvas) para el gráfico de ventas
+var ctx = document.getElementById('salesChart').getContext('2d');
+
+// Crear el gráfico de líneas inicial
+var salesChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],  // Inicialmente vacío
+        datasets: [{
+            label: 'Resumen de Ventas',
+            data: [],  // Inicialmente vacío
+            lineTension: 0,
+            backgroundColor: 'transparent',
+            borderColor: '#007bff',
+            borderWidth: 4,
+            pointBackgroundColor: '#007bff'
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true // Comenzar el eje y desde cero
+            }
+        }
+    }
+});
+
+// Función para actualizar el gráfico con los nuevos datos
+function updateSalesChart(labels, data) {
+    // Actualizar el gráfico con los nuevos datos
+    salesChart.data.labels = labels;
+    salesChart.data.datasets[0].data = data;
+    salesChart.update();
+}
+
+    
+</script>
+<script>
+    function updateInventoryChart(labels, data) {
+        // Actualizar el gráfico con los nuevos datos
+        inventoryChart.data.labels = labels;
+        inventoryChart.data.datasets[0].data = data;
+        inventoryChart.update();
+    }
+
+    // Obtener el contexto del lienzo (canvas) para el gráfico de inventario
+    var inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+
+    // Crear el gráfico de barras inicial para el inventario
+    var inventoryChart = new Chart(inventoryCtx, {
+        type: 'bar', // Cambiar el tipo de gráfico a 'bar' para un gráfico de barras
+        data: {
+            labels: [
+                {% for category, quantity in inventory_by_category %}
+                "{{ category }}",  // Etiquetas para las categorías
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'Inventario',
+                data: [
+                    {% for category, quantity in inventory_by_category %}
+                    {{ quantity }},  // Datos para la cantidad en inventario de cada categoría
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    '#007bff',  // Color de fondo para las barras
+                    'rgba(54, 162, 235, 0.5)',   // Color de fondo para las barras, y así sucesivamente
+                    // Puedes agregar más colores según la cantidad de categorías en tu inventario
+                ],
+                borderColor: [
+                    '#007bff',   // Color del borde para las barras
+                    'rgba(54, 162, 235, 1)',    // Color del borde para las barras, y así sucesivamente
+                    // Puedes agregar más colores según la cantidad de categorías en tu inventario
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // Comenzar el eje y desde cero
+                }
+            }
+        }
+    });
+</script>
+
+
+<script>
+    // Obtener el contexto del lienzo (canvas) para el gráfico de barras
+var ctx = document.getElementById('barChart').getContext('2d');
+
+// Obtener los datos de los productos más vendidos
+var productNames = [
+    {% for product in top_products %}
+    "{{ product[0] }}",
+    {% endfor %}
+];
+
+var quantitiesSold = [
+    {% for product in top_products %}
+    {{ product[1] }},
+    {% endfor %}
+];
+
+var incomesGenerated = [
+    {% for product in top_products %}
+    {{ product[2] }},
+    {% endfor %}
+];
+
+// Crear el gráfico de barras
+var barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: productNames,
+        datasets: [{
+            label: 'Cantidad vendida',
+            data: quantitiesSold,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Ingresos generados',
+            data: incomesGenerated,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+{% endblock %}
+

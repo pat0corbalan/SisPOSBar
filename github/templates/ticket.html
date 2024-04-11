@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - GProject</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice {
+            width: 80mm;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .details {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+        .total {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <div class="header">
+            <h2>GProject</h2>
+            <p>123 Main Street, City</p>
+            <p>Phone: 123-456-7890</p>
+            <p>Email: info@gproject.com</p>
+        </div>
+        <div class="details">
+            <p>Date: {{ date }}</p>
+            <p>Sale ID: {{ sale_id }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product, quantity, price in products %}
+                    <tr>
+                        <td>{{ product }}</td>
+                        <td>{{ quantity }}</td>
+                        <td>{{ price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="total">Total:</td>
+                    <td class="total">{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>

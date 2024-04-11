@@ -1,0 +1,41 @@
+{% extends 'base1.html' %}
+
+{% block title %}Configuraciones - SistemaPOS{% endblock %}
+
+{% block content %}   
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Configuraciones</h1>
+    </div>
+
+    <br>
+    <div class="container">
+        <div class="product-management-content">
+            <h3 class="text-center">Configuraciones Generales</h3>
+            <div class="row g-3">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="company_name" class="col-form-label">Nombre de la Empresa:</label>
+                            <input type="text" class="form-control" id="company_name" name="company_name" value="{{ settings[1] }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="col-form-label">Dirección:</label>
+                            <input type="text" class="form-control" id="address" name="address" value="{{ settings[2] }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone_number" class="col-form-label">Teléfono:</label>
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ settings[3] }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

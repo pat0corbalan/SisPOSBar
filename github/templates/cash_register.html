@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Caja - SistemaPOS{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Caja
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="amount">Cantidad:</label>
+                            <input type="text" class="form-control" id="amount" name="amount"
+                                placeholder="Ingrese la cantidad" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar a la caja</button>
+                    </form>
+                    <hr>
+                    <h4>Registros de la caja:</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in entries %}
+                            <tr>
+                                <td>{{ entry.date }}</td>
+                                <td>{{ entry.amount }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
